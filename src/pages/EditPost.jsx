@@ -1,32 +1,70 @@
-import { useEffect, useState } from 'react'
-import appwriteService from '../appwrite/config'
-import { useNavigate, useParams } from 'react-router'
-import { Container, PostForm } from '../components'
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router";
 
+import { databasesService } from "../appwrite";
+import { useDocumentTitle } from "../hooks";
+import { Container, Loader, PostForm } from "../components";
+
+// Render the edit post page
 function EditPost() {
-    const [post, setPost] = useState(null)
-    const { slug } = useParams()
-    const navigate = useNavigate()
+  const { slug } = useParams();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        if (slug) {
-            appwriteService.getPost(slug).then((post) => {
-                if (post) {
-                    setPost(post)
-                }
-            })
-        } else {
-            navigate('/')
+  const userData = useSelector((state) => state.auth.userData);
+  const [post, setPost] = useState(null);
+
+  // Update the document title
+  const pageTitle = post
+    ? post.title.length > 10
+      ? `${post.title.slice(0, 10)}...`
+      : post.title
+    : "Edit Post";
+
+  useDocumentTitle(pageTitle);
+
+  // Load the requested post
+  useEffect(() => {
+    if (!userData || !slug) {
+      navigate("/", { replace: true });
+      return;
+    }
+
+    const fetchPost = async () => {
+      try {
+        const fetchedPost = await databasesService.getPost(slug);
+
+        if (!fetchedPost || fetchedPost.userId !== userData.$id) {
+          navigate("/", { replace: true });
+          return;
         }
-    }, [slug, navigate])
 
-    return post ? (
-        <div className="py-8">
-            <Container>
-                <PostForm post={post} />
-            </Container>
-        </div>
-    ) : null
+        setPost(fetchedPost);
+      } catch (error) {
+        console.error("Error fetching post:", error);
+        navigate("/", { replace: true });
+      }
+    };
+
+    fetchPost();
+  }, [navigate, slug, userData]);
+
+  // Show a loader while fetching the post
+  if (!post) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  return (
+    <div className="mx-auto px-8 py-8">
+      <Container>
+        <PostForm post={post} />
+      </Container>
+    </div>
+  );
 }
 
-export default EditPost
+export default EditPost;

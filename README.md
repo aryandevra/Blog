@@ -1,8 +1,8 @@
 # 📝 Blogify
 
-A modern full-stack blogging platform built with **React**, **Vite**, **Appwrite**, and **Tailwind CSS**.
+A modern blogging platform built with **React**, **Vite**, **Appwrite**, and **Tailwind CSS**.
 
-Blogify allows users to create, edit, publish, and manage blog posts with a clean and responsive interface. It features secure authentication, rich text editing, image uploads, and dynamic content rendering powered by Appwrite.
+Blogify lets authenticated users create, edit, publish, and manage blog posts with image upload support and a rich text editor.
 
 ---
 
@@ -14,17 +14,16 @@ Blogify allows users to create, edit, publish, and manage blog posts with a clea
 
 ## ✨ Features
 
-- 🔐 User Authentication (Login / Signup)
-- 📝 Create, Edit, and Delete Blog Posts
-- 🖼️ Image Upload & Storage with Appwrite
-- ✍️ Rich Text Editor (TinyMCE)
-- 🔗 Automatic SEO-friendly Slug Generation
-- 📱 Fully Responsive Design
-- 🎨 Modern UI with Tailwind CSS
-- ⚡ Fast Performance with Vite
-- 🗂️ Post Management Dashboard
-- 🔄 State Management using Redux Toolkit
-- ☁️ Backend Services powered by Appwrite
+- 🔐 User authentication with Appwrite
+- 📝 Create, edit, and delete blog posts
+- 🖼️ Featured image upload and storage
+- ✍️ Rich text editing via TinyMCE
+- 📱 Responsive layout across devices
+- 🎨 Clean modern UI with Tailwind CSS
+- ⚡ Fast development experience with Vite
+- 🔄 Redux Toolkit for state management
+- 🔁 Client-side routing with React Router
+- ☁️ Appwrite-backed backend services
 
 ---
 
@@ -42,63 +41,45 @@ Blogify provides a clean and modern blogging experience where users can:
 
 ## 🛠️ Tech Stack
 
-### Frontend
-
-- React 19
+- React
 - Vite
-- Tailwind CSS 4
+- Tailwind CSS
+- Redux Toolkit
 - React Router
 - React Hook Form
-- Redux Toolkit
-
-### Backend
-
 - Appwrite
-
-### Editor
-
-- TinyMCE Rich Text Editor
-
-### Other Libraries
-
+- TinyMCE
 - HTML React Parser
 
 ---
 
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```text
-Blogify/
-│
+Blog/
 ├── public/
-│
 ├── src/
 │   ├── appwrite/
-│   │   ├── auth.js
-│   │   └── config.js
-│   │
-│   ├── components/
-│   │   ├── Header/
-│   │   ├── Footer/
-│   │   ├── PostForm/
-│   │   ├── RTE/
+│   │   ├── index.js
 │   │   └── ...
-│   │
+│   ├── components/
+│   │   ├── index.js
+│   │   └── ...
+│   ├── conf/
+│   │   └── conf.js
+│   ├── hooks/
+│   │   ├── index.js
+│   │   └── ...
 │   ├── pages/
-│   │   ├── Home.jsx
-│   │   ├── Login.jsx
-│   │   ├── Signup.jsx
-│   │   ├── AddPost.jsx
-│   │   ├── EditPost.jsx
-│   │   └── Post.jsx
-│   │
+│   │   ├── index.js
+│   ├── routes/
+│   │   └── router.jsx
 │   ├── store/
-│   │   └── authSlice.js
-│   │
+│   │   ├── authSlice.js
+│   │   └── store.js
 │   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
-│
+│   ├── index.css
+│   └── main.jsx
 ├── .env
 ├── package.json
 ├── vite.config.js
@@ -107,49 +88,9 @@ Blogify/
 
 ---
 
-## ⚙️ How It Works
+## 🔧 Setup
 
-### Authentication
-
-Users can:
-
-- Sign up for a new account
-- Log in securely
-- Stay authenticated using Appwrite sessions
-
-### Blog Management
-
-Authenticated users can:
-
-- Create new blog posts
-- Upload featured images
-- Edit existing posts
-- Delete posts
-- Publish or manage post status
-
-### Rich Text Editing
-
-TinyMCE provides:
-
-- Text formatting
-- Headings
-- Lists
-- Media embedding
-- Rich content creation
-
-### Storage
-
-Appwrite Storage handles:
-
-- Featured image uploads
-- Image previews
-- Secure file management
-
----
-
-## 🔑 Environment Variables
-
-Create a `.env` file in the root directory:
+Create a `.env` file in the project root and add:
 
 ```env
 VITE_APPWRITE_URL=YOUR_APPWRITE_ENDPOINT
@@ -157,43 +98,48 @@ VITE_APPWRITE_PROJECT_ID=YOUR_PROJECT_ID
 VITE_APPWRITE_DATABASE_ID=YOUR_DATABASE_ID
 VITE_APPWRITE_COLLECTION_ID=YOUR_COLLECTION_ID
 VITE_APPWRITE_BUCKET_ID=YOUR_BUCKET_ID
+VITE_TINYMCE_KEY=YOUR_TINYMCE_KEY
 ```
 
 ---
 
 ## 🗄️ Appwrite Setup
 
-### Create a Project
+### 1. Create a Project
 
-1. Create a new Appwrite project.
-2. Copy the Project ID.
+- Create a new Appwrite project.
+- Copy the Project ID.
 
-### Database
+### 2. Create a Database and Collection
 
-Create a database and collection with fields:
+Add a collection with fields such as:
 
 ```text
 title           String
 content         String
 featuredImage   String
-status          String
+isPrivate       Boolean
 userId          String
 ```
 
-### Storage Bucket
+### 3. Create a Storage Bucket
 
-Create a bucket for blog images.
+Use Appwrite Storage for featured image uploads.
 
-For development:
+For development, enable read access as needed.
 
-```text
-Read Access:
-Any
-```
+### 4. Enable Authentication
 
-### Authentication
+- Enable email/password authentication
+- Allow users to sign up and log in
 
-Enable:
+---
+
+## 📌 Notes
+
+- Ensure Appwrite endpoint and project values are correct in `.env`.
+- Use `npm run dev` to start the local Vite server.
+- The app uses Appwrite sessions for authentication and file uploads.
 
 ```text
 Email / Password Authentication
@@ -223,7 +169,7 @@ npm install
 
 ### 4. Configure Environment Variables
 
-Create a `.env` file and add your Appwrite credentials.
+Create a `.env` file and add your Appwrite and TinyMCE credentials.
 
 ### 5. Start Development Server
 

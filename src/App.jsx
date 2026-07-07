@@ -1,38 +1,66 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import authService from './appwrite/auth'
-import { login, logout } from './store/authSlice'
-import { Footer, Header } from './components/index';
-import { Outlet } from 'react-router'
+import { Outlet } from "react-router";
+
+import { login, logout } from "./store/authSlice";
+import { useDocumentTitle } from "./hooks";
+import { authService } from "./appwrite";
+import { Footer, Header, Loader, ScrollToTop } from "./components";
 
 function App() {
-  const [loading, setLoading] = useState(true)
-  const dispatch = useDispatch()
+  // Set the document title
+  useDocumentTitle("Blog");
 
+  const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
+
+  // Check the user's authentication status on app load
   useEffect(() => {
-    authService.getCurrentUser().then((userData) => {
-      if (userData) {
-        dispatch(
-          login({
-            userData: {
+    const checkAuth = async () => {
+      try {
+        const userData = await authService.getCurrentUser();
+
+        if (userData) {
+          dispatch(
+            login({
               $id: userData.$id,
               name: userData.name,
               email: userData.email,
-            },
-          })
-        )
-      } else {
-        dispatch(logout())
+            }),
+          );
+        } else {
+          dispatch(logout());
+        }
+      } finally {
+        setLoading(false);
       }
-    }).finally(() => setLoading(false))
-  }, [])
+    };
 
-  return !loading ? (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 via-white to-slate-100">
+    checkAuth();
+  }, [dispatch]);
+
+  // Show a loading indicator while checking authentication
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-linear-to-b from-slate-50 via-white to-slate-100">
+      <ScrollToTop />
       <Header />
-      <main><Outlet /></main>
+
+      <main>
+        <Outlet />
+      </main>
+
       <Footer />
     </div>
-  ) : null
+  );
 }
-export default App
+
+export default App;

@@ -1,33 +1,33 @@
-import { Editor } from '@tinymce/tinymce-react'
-import { Controller } from 'react-hook-form'
+import { Editor } from "@tinymce/tinymce-react";
+import { Controller } from "react-hook-form";
 
-function RTE({
-  name,
-  control,
-  label,
-  defaultValue = ""
-}) {
+import conf from "../conf/conf";
+
+function RTE({ name = "content", control, label, defaultValue = "" }) {
+  // Render a TinyMCE editor integrated with React Hook Form
   return (
-    <div className="w-full">
-      {label && <label className='inline-block mb-1 pl-1'>{label}</label>}
+    <div className="mb-4 w-full">
+      {label && (
+        <label className="mb-1 inline-block pl-1 font-semibold">{label}</label>
+      )}
 
       <Controller
-        name={name || "content"}
+        name={name}
         control={control}
-        render={({ field: { onChange } }) => (
+        render={({ field: { onChange, value } }) => (
           <Editor
-            apiKey={import.meta.env.VITE_TINYMCE_KEY}
+            apiKey={conf.tinyMceKey}
+            value={value}
             init={{
+              branding: false,
               initialValue: defaultValue,
               height: 500,
               menubar: true,
               plugins: [
-                "image",
                 "advlist",
                 "autolink",
                 "lists",
                 "link",
-                "image",
                 "charmap",
                 "preview",
                 "anchor",
@@ -36,23 +36,21 @@ function RTE({
                 "code",
                 "fullscreen",
                 "insertdatetime",
-                "media",
                 "table",
-                "code",
                 "help",
                 "wordcount",
-                "anchor",
               ],
               toolbar:
-                "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | help",
-              content_style: "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }"
+                "undo redo | blocks | alignleft aligncenter alignright alignjustify | bold italic strikethrough forecolor | bullist numlist outdent indent | removeformat | help",
+              content_style:
+                "body { font-family: Arial, Helvetica, sans-serif; font-size: 18px; }",
             }}
             onEditorChange={onChange}
           />
         )}
       />
     </div>
-  )
+  );
 }
 
-export default RTE
+export default RTE;

@@ -1,75 +1,74 @@
-import conf from '../conf/conf'
-import { Client, Account, ID } from "appwrite";
+import { Account, Client, ID } from "appwrite";
+
+import conf from "../conf/conf";
 
 export class AuthService {
-    client = new Client()
-    account
+  // Initialize Appwrite client and account service
+  client = new Client();
+  account;
 
-    constructor() {
-        this.client
-            .setEndpoint(conf.appwriteUrl)
-            .setProject(conf.appwriteProjectId);
+  constructor() {
+    this.client
+      .setEndpoint(conf.appwriteUrl)
+      .setProject(conf.appwriteProjectId);
 
-        this.account = new Account(this.client);
+    this.account = new Account(this.client);
+  }
+
+  // Create a new account and automatically log in
+  async createAccount({ email, password, name }) {
+    try {
+      await this.account.create({
+        userId: ID.unique(),
+        email: email.trim(),
+        password,
+        name: name.trim(),
+      });
+
+      return this.login({ email, password });
+    } catch (error) {
+      console.error("Appwrite :: createAccount :: ", error);
+      throw error;
     }
+  }
 
-    async createAccount({ email, password, name }) {
-        try {
-            const user = await this.account.create({
-                userId: ID.unique(),
-                email,
-                password,
-                name
-            });
-
-            if (user) {
-                // call another method
-                return this.login({ email, password })
-            }
-            else {
-                return user
-            }
-        } catch (error) {
-            console.log("Appwrite service :: errcreateAccount :: error", error)
-            throw error
-        }
+  // Create an email/password session
+  async login({ email, password }) {
+    try {
+      return await this.account.createEmailPasswordSession({
+        email: email.trim(),
+        password,
+      });
+    } catch (error) {
+      console.error("Appwrite :: login :: ", error);
+      throw error;
     }
+  }
 
-    async login({ email, password }) {
-        try {
-            return await this.account.createEmailPasswordSession({
-                email,
-                password
-            });
-        } catch (error) {
-            console.log("Appwrite service :: login :: error", error)
-            throw error
-        }
+  // Retrieve the currently authenticated user
+  async getCurrentUser() {
+    try {
+      return await this.account.get();
+    } catch (error) {
+      console.error("Appwrite :: getCurrentUser :: ", error);
+      throw error;
     }
+  }
 
-    async getCurrentUser() {
-        try {
-            return await this.account.get();
-            // Logged in
-        } catch (err) {
-            // Not logged in
-            console.log("Appwrite service :: getCurrentUser :: error", err);
-        }
-
-        return null
+  // End the current session
+  async logout() {
+    try {
+      return await this.account.deleteSession({
+        sessionId: "current",
+      });
+    } catch (error) {
+      console.error("Appwrite :: logout :: ", error);
+      throw error;
     }
-
-    async logout() {
-        try {
-            await this.account.deleteSession({
-                sessionId: 'current'
-            });
-        } catch (error) {
-            console.log("Appwrite service :: logout :: error", error);
-        }
-    }
+  }
 }
 
-const authService = new AuthService()
+// Export a singleton instance
+const authService = new AuthService();
 
-export default authService
+export default authService;

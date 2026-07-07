@@ -1,11 +1,21 @@
 @import "tailwindcss";
 
-body {
-    font-family: Inter, system-ui, sans-serif;
-    background: #f8fafc;
-    color: #0f172a;
+html {
+  scroll-behavior: smooth;
 }
 
-html {
-    scroll-behavior: smooth
+body {
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: system-ui, Arial, Helvetica, sans-serif;
+}
+
+@layer components {
+  .footer-link {
+    @apply cursor-pointer brightness-80 transition duration-200 hover:brightness-100;
+  }
+
+  .header-nav-link {
+    @apply rounded-xl px-4 py-2 transition duration-200;
+  }
 }
