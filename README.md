@@ -72,6 +72,7 @@ Blog/
 │   │   └── ...
 │   ├── pages/
 │   │   ├── index.js
+│   │   └── ...
 │   ├── routes/
 │   │   └── router.jsx
 │   ├── store/
@@ -80,6 +81,7 @@ Blog/
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx
+├── index.html
 ├── .env
 ├── package.json
 ├── vite.config.js
@@ -96,7 +98,7 @@ Create a `.env` file in the project root and add:
 VITE_APPWRITE_URL=YOUR_APPWRITE_ENDPOINT
 VITE_APPWRITE_PROJECT_ID=YOUR_PROJECT_ID
 VITE_APPWRITE_DATABASE_ID=YOUR_DATABASE_ID
-VITE_APPWRITE_COLLECTION_ID=YOUR_COLLECTION_ID
+VITE_APPWRITE_TABLE_ID=YOUR_COLLECTION_ID
 VITE_APPWRITE_BUCKET_ID=YOUR_BUCKET_ID
 VITE_TINYMCE_KEY=YOUR_TINYMCE_KEY
 ```
@@ -116,6 +118,7 @@ Add a collection with fields such as:
 
 ```text
 title           String
+slug            String
 content         String
 featuredImage   String
 isPrivate       Boolean
