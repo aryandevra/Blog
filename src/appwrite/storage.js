@@ -1,6 +1,6 @@
-import { Client, ID, Storage } from "appwrite";
+import { Client, ID, Storage } from 'appwrite';
 
-import conf from "../conf/conf";
+import config from '../config/config';
 
 export class StorageService {
   // Initialize Appwrite client and storage service
@@ -8,12 +8,12 @@ export class StorageService {
   storage;
 
   // Store storage configuration
-  bucketId = conf.appwriteBucketId;
+  bucketId = config.appwriteBucketId;
 
   constructor() {
     this.client
-      .setEndpoint(conf.appwriteUrl)
-      .setProject(conf.appwriteProjectId);
+      .setEndpoint(config.appwriteUrl)
+      .setProject(config.appwriteProjectId);
 
     this.storage = new Storage(this.client);
   }
@@ -27,7 +27,7 @@ export class StorageService {
         file,
       });
     } catch (error) {
-      console.error("Appwrite :: uploadFile :: ", error);
+      console.error('Appwrite :: uploadFile :: ', error);
       throw error;
     }
   }
@@ -40,7 +40,7 @@ export class StorageService {
         fileId,
       });
     } catch (error) {
-      console.error("Appwrite :: deleteFile :: ", error);
+      console.error('Appwrite :: deleteFile :: ', error);
       throw error;
     }
   }
@@ -54,7 +54,7 @@ export class StorageService {
         file,
       });
     } catch (error) {
-      console.error("Appwrite :: updateFile :: ", error);
+      console.error('Appwrite :: updateFile :: ', error);
       throw error;
     }
   }
@@ -82,7 +82,7 @@ export class StorageService {
         fileId,
       });
     } catch (error) {
-      console.error("Appwrite :: getFileView :: ", error);
+      console.error('Appwrite :: getFileView :: ', error);
       throw error;
     }
   }

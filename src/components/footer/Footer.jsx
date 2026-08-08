@@ -1,22 +1,23 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router';
+import toast from 'react-hot-toast';
 
-import { Button, Logo } from "../index";
+import { Button, Logo } from '../index';
 
 const categories = [
-  { name: "Technology", slug: "/#" },
-  { name: "Travel", slug: "/#" },
-  { name: "Lifestyle", slug: "/#" },
+  { name: 'Technology', slug: '/#' },
+  { name: 'Travel', slug: '/#' },
+  { name: 'Lifestyle', slug: '/#' },
 ];
 
-function Footer() {
+const Footer = () => {
   // Newsletter state
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   // Authentication status
-  const authStatus = useSelector((state) => state.auth.status);
+  const authStatus = useSelector(state => state.auth.status);
 
   // Hide the success message after 3 seconds
   useEffect(() => {
@@ -31,16 +32,17 @@ function Footer() {
 
   // Footer navigation links
   const quickLinks = [
-    { name: "Home", slug: "/", active: true },
-    { name: "All Posts", slug: "/all-posts", active: true },
-    { name: "Add Post", slug: "/add-post", active: authStatus },
+    { name: 'Home', slug: '/', active: true },
+    { name: 'All Posts', slug: '/all-posts', active: true },
+    { name: 'Add Post', slug: '/add-post', active: authStatus },
   ];
 
   // Handle newsletter subscription
-  const handleSubscribe = (e) => {
+  const handleSubscribe = e => {
     e.preventDefault();
 
-    setEmail("");
+    toast.success('Subscribed to the newsletter!');
+    setEmail('');
     setIsSubscribed(true);
   };
 
@@ -62,14 +64,14 @@ function Footer() {
 
           <ul className="space-y-2 text-slate-300">
             {quickLinks.map(
-              (item) =>
+              item =>
                 item.active && (
                   <li key={item.name}>
                     <Link to={item.slug}>
                       <span className="footer-link">{item.name}</span>
                     </Link>
                   </li>
-                ),
+                )
             )}
           </ul>
         </div>
@@ -79,7 +81,7 @@ function Footer() {
           <h3 className="mb-3 font-bold">Categories</h3>
 
           <ul className="space-y-2 text-slate-300">
-            {categories.map((item) => (
+            {categories.map(item => (
               <li key={item.name}>
                 <Link to={item.slug}>
                   <span className="footer-link">{item.name}</span>
@@ -101,15 +103,15 @@ function Footer() {
               value={email}
               required
               className="w-full rounded-xl p-3 text-white outline-1 outline-white focus:outline-2"
-              onChange={(e) => setEmail(e.target.value.trim())}
+              onChange={e => setEmail(e.target.value.trim())}
             />
 
             <Button
               type="submit"
               disabled={isSubscribed}
-              className="mt-3 rounded-xl px-3 py-1 text-sm transition hover:bg-violet-700 disabled:bg-gray-400"
+              className="mt-3 rounded-xl px-3 py-1 text-sm hover:bg-violet-700 disabled:bg-gray-400"
             >
-              {isSubscribed ? "Subscribed 🔔" : "Subscribe"}
+              {isSubscribed ? 'Subscribed 🔔' : 'Subscribe'}
             </Button>
           </form>
         </div>
@@ -122,6 +124,6 @@ function Footer() {
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;

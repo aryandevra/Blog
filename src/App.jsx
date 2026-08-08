@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Outlet } from "react-router";
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Outlet } from 'react-router';
+import { Toaster } from 'react-hot-toast';
 
-import { login, logout } from "./store/authSlice";
-import { useDocumentTitle } from "./hooks";
-import { authService } from "./appwrite";
-import { Footer, Header, Loader, ScrollToTop } from "./components";
+import { login, logout } from './store/authSlice';
+import { useDocumentTitle } from './hooks';
+import { authService } from './appwrite';
+import { Footer, Header, Loader, ScrollToTop } from './components';
 
-function App() {
+const App = () => {
   // Set the document title
-  useDocumentTitle("Blog");
+  useDocumentTitle('Blog');
 
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +28,7 @@ function App() {
               $id: userData.$id,
               name: userData.name,
               email: userData.email,
-            }),
+            })
           );
         } else {
           dispatch(logout());
@@ -50,17 +51,20 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-slate-50 via-white to-slate-100">
-      <ScrollToTop />
-      <Header />
+    <>
+      <Toaster position="top-center" toastOptions={{ duration: 3000 }} />
+      <div className="min-h-screen bg-linear-to-b from-slate-50 via-white to-slate-100">
+        <ScrollToTop />
+        <Header />
 
-      <main>
-        <Outlet />
-      </main>
+        <main>
+          <Outlet />
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </>
   );
-}
+};
 
 export default App;

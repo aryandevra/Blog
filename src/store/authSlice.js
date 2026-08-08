@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 // Initial authentication state
 const initialState = {
@@ -7,7 +7,7 @@ const initialState = {
 };
 
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     // Store authenticated user data
@@ -17,7 +17,7 @@ const authSlice = createSlice({
     },
 
     // Clear authentication state
-    logout: (state) => {
+    logout: state => {
       state.status = false;
       state.userData = null;
     },

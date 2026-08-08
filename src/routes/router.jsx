@@ -1,7 +1,7 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter } from 'react-router';
 
-import App from "../App";
-import { Protected } from "../components";
+import App from '../App';
+import { Protected } from '../components';
 import {
   AddPost,
   AllPosts,
@@ -11,89 +11,67 @@ import {
   PageNotFound,
   Post,
   Signup,
-} from "../pages";
+} from '../pages';
 
-// Configure application routes
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    path: '/',
+    Component: App,
     children: [
       {
         index: true,
-        handle: {
-          title: "Home",
-        },
-        element: <Home />, // all can view home page
+        handle: { title: 'Home' },
+        Component: Home,
       },
       {
-        path: "/login",
-        handle: {
-          title: "Login",
-        },
-        element: (
-          <Protected authentication={false}>
-            <Login />
-          </Protected>
-        ),
+        path: '/post/:slug',
+        handle: { title: 'Post' },
+        Component: Post,
       },
+
+      // Guest-only routes (Login, Signup)
       {
-        path: "/signup",
-        handle: {
-          title: "Signup",
-        },
-        element: (
-          <Protected authentication={false}>
-            <Signup />
-          </Protected>
-        ),
+        element: <Protected authentication={false} />,
+        children: [
+          {
+            path: '/login',
+            handle: { title: 'Login' },
+            Component: Login,
+          },
+          {
+            path: '/signup',
+            handle: { title: 'Signup' },
+            Component: Signup,
+          },
+        ],
       },
+
+      // Authenticated-only routes (Dashboard/Posts)
       {
-        path: "/all-posts",
-        handle: {
-          title: "All Posts",
-        },
-        element: (
-          <Protected authentication>
-            <AllPosts />
-          </Protected>
-        ),
+        element: <Protected authentication={true} />,
+        children: [
+          {
+            path: '/all-posts',
+            handle: { title: 'All Posts' },
+            Component: AllPosts,
+          },
+          {
+            path: '/add-post',
+            handle: { title: 'Add Post' },
+            Component: AddPost,
+          },
+          {
+            path: '/edit-post/:slug',
+            handle: { title: 'Edit Post' },
+            Component: EditPost,
+          },
+        ],
       },
+
       {
-        path: "/post/:slug",
-        handle: {
-          title: "Post",
-        },
-        element: <Post />, // all can view post if public
-      },
-      {
-        path: "/add-post",
-        handle: {
-          title: "Add Post",
-        },
-        element: (
-          <Protected authentication>
-            <AddPost />
-          </Protected>
-        ),
-      },
-      {
-        path: "/edit-post/:slug",
-        handle: {
-          title: "Edit Post",
-        },
-        element: (
-          <Protected authentication>
-            <EditPost />
-          </Protected>
-        ),
-      },
-      {
-        path: "*",
-        handle: {
-          title: "404 Error",
-        },
-        element: <PageNotFound />,
+        path: '*',
+        handle: { title: '404 Error' },
+        Component: PageNotFound,
       },
     ],
   },

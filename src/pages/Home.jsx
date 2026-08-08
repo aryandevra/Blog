@@ -1,68 +1,93 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { databasesService } from "../appwrite";
-import { Container, Loader, PostCard } from "../components";
+import { setPosts } from '../store/postSlice';
+import { databasesService } from '../appwrite';
+import { Button, Container, Loader, PostCard } from '../components';
 
-// Render the home page
-function Home() {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+const Home = () => {
+  const dispatch = useDispatch();
 
-  // Load public posts
+  const posts = useSelector(state => state.posts.publicPosts);
+  const needsRefresh = useSelector(state => state.posts.needsRefresh.public);
+
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
+    if (!needsRefresh && posts.length > 0) return;
+
+    let cancelled = false;
+
     const fetchPosts = async () => {
       setLoading(true);
 
       try {
         const response = await databasesService.getPublicPosts();
-        setPosts(response);
+
+        if (cancelled) return;
+
+        dispatch(setPosts({ type: 'public', posts: response }));
       } catch (error) {
-        console.error("Error fetching posts:", error);
-        setPosts([]);
+        console.error('Error fetching posts:', error);
+
+        if (cancelled) return;
+
+        dispatch(setPosts({ type: 'public', posts: [] }));
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     };
 
     fetchPosts();
-  }, []);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [dispatch, needsRefresh, posts.length]);
 
   return (
     <>
-      <section className="relative overflow-hidden bg-linear-to-br from-violet-50 via-white to-indigo-100">
-        <div className="mx-auto max-w-7xl px-6 py-24 text-center">
-          <h1 className="text-6xl font-extrabold text-slate-900 md:text-7xl">
-            Discover <span className="text-violet-600">Amazing</span> Stories
-          </h1>
+      <section className="bg-linear-to-r from-violet-50 to-indigo-50 py-20">
+        <Container>
+          <div className="px-6 text-center">
+            <h1 className="text-5xl font-bold text-slate-900">
+              Discover Amazing Stories
+            </h1>
 
-          <p className="mt-6 text-xl text-slate-600">
-            Read, write and share your thoughts with the world.
-          </p>
+            <p className="mt-6 text-xl text-slate-600">
+              Read, write and share your thoughts with the world.
+            </p>
 
-          <a
-            href="#posts"
-            className="mt-10 inline-block rounded-2xl bg-linear-to-r from-violet-600 to-indigo-600 px-8 py-4 font-semibold text-white shadow-lg transition-shadow hover:shadow-xl"
-          >
-            Explore Posts
-          </a>
-        </div>
+            <a href="#posts">
+              <Button className="mt-10 inline-block rounded-2xl bg-linear-to-r from-violet-600 to-indigo-600 px-8 py-4 font-semibold text-white shadow-lg hover:shadow-xl">
+                Explore Posts
+              </Button>
+            </a>
+          </div>
+        </Container>
       </section>
 
       <Container>
-        <div className="px-6 py-16" id="posts">
+        <div id="posts" className="px-6 py-16">
           <h2 className="mb-8 text-3xl font-bold">Latest Posts</h2>
 
-          {loading ? (
+          {loading && (
             <div className="flex items-center justify-center py-12">
               <Loader />
             </div>
-          ) : posts.length > 0 ? (
+          )}
+
+          {!loading && posts.length > 0 && (
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {posts.map((post) => (
+              {posts.map(post => (
                 <PostCard key={post.$id} {...post} />
               ))}
             </div>
-          ) : (
+          )}
+
+          {!loading && posts.length === 0 && (
             <div className="py-12 text-center">
               <h2 className="inline-block rounded-lg border border-yellow-400 bg-yellow-100 px-4 py-3 text-xl text-slate-600">
                 There are no posts to view
@@ -73,6 +98,6 @@ function Home() {
       </Container>
     </>
   );
-}
+};
 
 export default Home;

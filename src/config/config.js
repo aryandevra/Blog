@@ -1,5 +1,5 @@
 // Centralized application configuration loaded from Vite environment variables
-const conf = Object.freeze({
+const config = Object.freeze({
   appwriteUrl: String(import.meta.env.VITE_APPWRITE_URL),
   appwriteProjectId: String(import.meta.env.VITE_APPWRITE_PROJECT_ID),
   appwriteDatabaseId: String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
@@ -9,4 +9,4 @@ const conf = Object.freeze({
   tinyMceKey: String(import.meta.env.VITE_TINYMCE_KEY),
 });
 
-export default conf;
+export default config;

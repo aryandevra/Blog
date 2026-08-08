@@ -1,35 +1,47 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 
-import { authService } from "../../appwrite";
-import { logout } from "../../store/authSlice";
-import { Button } from "../index";
+import { authService } from '../../appwrite';
+import { logout } from '../../store/authSlice';
+import { Button } from '..';
+import toast from 'react-hot-toast';
 
-function LogoutBtn({
-  bgColor = "bg-white",
-  textColor = "text-black",
-  className = "",
-}) {
+const LogoutBtn = ({
+  bgColor = 'bg-white',
+  textColor = 'text-black',
+  className = '',
+}) => {
   // Initialize Redux, navigation and error state
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // Handle user logout
   const logoutHandler = async () => {
-    setError("");
+    setError('');
 
     try {
       await authService.logout();
 
       dispatch(logout());
-      navigate("/", { replace: true });
+
+      toast.success('Logout successfully');
+      navigate('/', { replace: true });
     } catch (error) {
-      setError(error.message);
+      toast.error(error?.message || 'Something went wrong');
+      setError(error?.message || 'Something went wrong');
     }
   };
+
+  if (error) {
+    return (
+      <div className="fixed top-0 left-0 h-screen w-screen overflow-hidden bg-white p-4">
+        <p className="text-base font-medium text-red-500">Error: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -41,15 +53,8 @@ function LogoutBtn({
       >
         Logout
       </Button>
-
-      {/* Display logout error */}
-      {error && (
-        <p className="z-12 mt-2 text-center text-sm text-red-500">
-          &#9888; {error}
-        </p>
-      )}
     </>
   );
-}
+};
 
 export default LogoutBtn;

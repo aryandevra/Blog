@@ -1,6 +1,6 @@
-import { Account, Client, ID } from "appwrite";
+import { Account, Client, ID } from 'appwrite';
 
-import conf from "../conf/conf";
+import config from '../config/config';
 
 export class AuthService {
   // Initialize Appwrite client and account service
@@ -9,8 +9,8 @@ export class AuthService {
 
   constructor() {
     this.client
-      .setEndpoint(conf.appwriteUrl)
-      .setProject(conf.appwriteProjectId);
+      .setEndpoint(config.appwriteUrl)
+      .setProject(config.appwriteProjectId);
 
     this.account = new Account(this.client);
   }
@@ -27,7 +27,7 @@ export class AuthService {
 
       return this.login({ email, password });
     } catch (error) {
-      console.error("Appwrite :: createAccount :: ", error);
+      console.error('Appwrite :: createAccount :: ', error);
       throw error;
     }
   }
@@ -40,7 +40,7 @@ export class AuthService {
         password,
       });
     } catch (error) {
-      console.error("Appwrite :: login :: ", error);
+      console.error('Appwrite :: login :: ', error);
       throw error;
     }
   }
@@ -50,7 +50,7 @@ export class AuthService {
     try {
       return await this.account.get();
     } catch (error) {
-      console.error("Appwrite :: getCurrentUser :: ", error);
+      console.error('Appwrite :: getCurrentUser :: ', error);
       throw error;
     }
   }
@@ -59,10 +59,10 @@ export class AuthService {
   async logout() {
     try {
       return await this.account.deleteSession({
-        sessionId: "current",
+        sessionId: 'current',
       });
     } catch (error) {
-      console.error("Appwrite :: logout :: ", error);
+      console.error('Appwrite :: logout :: ', error);
       throw error;
     }
   }

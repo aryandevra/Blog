@@ -60,24 +60,12 @@ Blog/
 ├── public/
 ├── src/
 │   ├── appwrite/
-│   │   ├── index.js
-│   │   └── ...
 │   ├── components/
-│   │   ├── index.js
-│   │   └── ...
-│   ├── conf/
-│   │   └── conf.js
+│   ├── config/
 │   ├── hooks/
-│   │   ├── index.js
-│   │   └── ...
 │   ├── pages/
-│   │   ├── index.js
-│   │   └── ...
 │   ├── routes/
-│   │   └── router.jsx
 │   ├── store/
-│   │   ├── authSlice.js
-│   │   └── store.js
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx
@@ -100,6 +88,7 @@ VITE_APPWRITE_PROJECT_ID=YOUR_PROJECT_ID
 VITE_APPWRITE_DATABASE_ID=YOUR_DATABASE_ID
 VITE_APPWRITE_TABLE_ID=YOUR_COLLECTION_ID
 VITE_APPWRITE_BUCKET_ID=YOUR_BUCKET_ID
+
 VITE_TINYMCE_KEY=YOUR_TINYMCE_KEY
 ```
 

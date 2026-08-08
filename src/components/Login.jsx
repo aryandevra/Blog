@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 
-import { authService } from "../appwrite";
-import { login as authLogin } from "../store/authSlice";
-import { Button, Input, Logo } from ".";
+import { authService } from '../appwrite';
+import { login as authLogin } from '../store/authSlice';
+import { Button, Input, Logo } from '.';
 
-function Login() {
+const Login = () => {
   // Initialize navigation, Redux and form state
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -20,17 +21,17 @@ function Login() {
       isValid,
     },
   } = useForm({
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   // Store login error and loading state
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Authenticate the user
-  const handleLogin = async (data) => {
+  const handleLogin = async data => {
     setLoading(true);
-    setError("");
+    setError('');
 
     try {
       const session = await authService.login(data);
@@ -44,14 +45,16 @@ function Login() {
               $id: userData.$id,
               name: userData.name,
               email: userData.email,
-            }),
+            })
           );
         }
 
-        navigate("/");
+        toast.success('Logged in successfully!');
+        navigate('/');
       }
     } catch (error) {
-      setError(error?.message || "Something went wrong");
+      toast.error(error?.message || 'Something went wrong');
+      setError(error?.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
@@ -92,12 +95,12 @@ function Login() {
               type="email"
               placeholder="Enter your email"
               readOnly={loading}
-              {...register("email", {
-                setValueAs: (value) => value.trim(),
-                required: "Email is required",
+              {...register('email', {
+                setValueAs: value => value.trim(),
+                required: 'Email is required',
                 pattern: {
                   value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                  message: "Enter a valid email address",
+                  message: 'Enter a valid email address',
                 },
               })}
             />
@@ -107,11 +110,11 @@ function Login() {
               type="password"
               placeholder="Enter your password"
               readOnly={loading}
-              {...register("password", {
-                required: "Password is required",
+              {...register('password', {
+                required: 'Password is required',
                 minLength: {
                   value: 8,
-                  message: "Password must be at least 8 characters long",
+                  message: 'Password must be at least 8 characters long',
                 },
               })}
             />
@@ -119,15 +122,15 @@ function Login() {
             <Button
               type="submit"
               disabled={!isValid || loading}
-              className="mt-8 w-full rounded-xl py-2 transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+              className="mt-8 w-full rounded-xl py-2 hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-400"
             >
-              {loading ? "Logging..." : "Log In"}
+              {loading ? 'Logging...' : 'Log In'}
             </Button>
           </div>
         </form>
       </div>
     </div>
   );
-}
+};
 
 export default Login;

@@ -1,6 +1,6 @@
-import { Client, ID, Query, TablesDB } from "appwrite";
+import { Client, ID, Query, TablesDB } from 'appwrite';
 
-import conf from "../conf/conf";
+import config from '../config/config';
 
 export class DatabaseService {
   // Initialize Appwrite client and TablesDB service
@@ -8,13 +8,13 @@ export class DatabaseService {
   tablesDB;
 
   // Store database configuration
-  databaseId = conf.appwriteDatabaseId;
-  tableId = conf.appwriteTableId;
+  databaseId = config.appwriteDatabaseId;
+  tableId = config.appwriteTableId;
 
   constructor() {
     this.client
-      .setEndpoint(conf.appwriteUrl)
-      .setProject(conf.appwriteProjectId);
+      .setEndpoint(config.appwriteUrl)
+      .setProject(config.appwriteProjectId);
 
     this.tablesDB = new TablesDB(this.client);
   }
@@ -36,7 +36,7 @@ export class DatabaseService {
         },
       });
     } catch (error) {
-      console.error("Appwrite :: createPost :: ", error);
+      console.error('Appwrite :: createPost :: ', error);
       throw error;
     }
   }
@@ -44,7 +44,7 @@ export class DatabaseService {
   // Update an existing post
   async updatePost(
     postId,
-    { title, slug, content, featuredImage, isPrivate, userId },
+    { title, slug, content, featuredImage, isPrivate, userId }
   ) {
     try {
       return await this.tablesDB.updateRow({
@@ -61,7 +61,7 @@ export class DatabaseService {
         },
       });
     } catch (error) {
-      console.error("Appwrite :: updatePost :: ", error);
+      console.error('Appwrite :: updatePost :: ', error);
       throw error;
     }
   }
@@ -75,7 +75,7 @@ export class DatabaseService {
         rowId: postId,
       });
     } catch (error) {
-      console.error("Appwrite :: deletePost :: ", error);
+      console.error('Appwrite :: deletePost :: ', error);
       throw error;
     }
   }
@@ -89,7 +89,7 @@ export class DatabaseService {
         rowId: postId,
       });
     } catch (error) {
-      console.error("Appwrite :: _getPost :: ", error);
+      console.error('Appwrite :: _getPost :: ', error);
       throw error;
     }
   }
@@ -100,7 +100,7 @@ export class DatabaseService {
       const result = await this.tablesDB.listRows({
         databaseId: this.databaseId,
         tableId: this.tableId,
-        queries: [Query.equal("slug", slug)],
+        queries: [Query.equal('slug', slug)],
       });
 
       if (result.total === 0) {
@@ -109,7 +109,7 @@ export class DatabaseService {
 
       return this._getPost(result.rows[0].$id);
     } catch (error) {
-      console.error("Appwrite :: getPost :: ", error);
+      console.error('Appwrite :: getPost :: ', error);
       throw error;
     }
   }
@@ -120,12 +120,12 @@ export class DatabaseService {
       const response = await this.tablesDB.listRows({
         databaseId: this.databaseId,
         tableId: this.tableId,
-        queries: [Query.equal("isPrivate", false)],
+        queries: [Query.equal('isPrivate', false)],
       });
 
       return response.rows;
     } catch (error) {
-      console.error("Appwrite :: getPublicPosts :: ", error);
+      console.error('Appwrite :: getPublicPosts :: ', error);
       throw error;
     }
   }
@@ -141,14 +141,14 @@ export class DatabaseService {
         databaseId: this.databaseId,
         tableId: this.tableId,
         queries: [
-          Query.equal("isPrivate", true),
-          Query.equal("userId", userId),
+          Query.equal('isPrivate', true),
+          Query.equal('userId', userId),
         ],
       });
 
       return response.rows;
     } catch (error) {
-      console.error("Appwrite :: getPrivatePosts :: ", error);
+      console.error('Appwrite :: getPrivatePosts :: ', error);
       throw error;
     }
   }
@@ -163,7 +163,7 @@ export class DatabaseService {
 
       return [...privatePosts, ...publicPosts];
     } catch (error) {
-      console.error("Appwrite :: getPosts :: ", error);
+      console.error('Appwrite :: getPosts :: ', error);
       throw error;
     }
   }

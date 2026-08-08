@@ -1,18 +1,8 @@
-@import "tailwindcss";
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: #f8fafc;
-  color: #0f172a;
-  font-family: system-ui, Arial, Helvetica, sans-serif;
-}
+@import 'tailwindcss';
 
 @layer components {
   .footer-link {
-    @apply cursor-pointer brightness-80 transition duration-200 hover:brightness-100;
+    @apply cursor-pointer brightness-80 transition duration-200 hover:brightness-120;
   }
 
   .header-nav-link {

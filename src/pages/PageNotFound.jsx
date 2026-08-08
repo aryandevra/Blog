@@ -1,9 +1,9 @@
-import { Link } from "react-router";
+import { Link } from 'react-router';
 
-import { Button, Container } from "../components";
+import { Button, Container } from '../components';
 
 // Render the 404 page
-function PageNotFound() {
+const PageNotFound = () => {
   return (
     <section className="flex min-h-[calc(100vh-10rem)] items-center bg-linear-to-br from-violet-50 via-white to-indigo-100 px-6 py-16">
       <Container>
@@ -20,14 +20,14 @@ function PageNotFound() {
 
           {/* Description */}
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600">
-            The page you're looking for doesn't exist, may have been moved, or
+            The page you're looking for doesn't exist, may have been moved or
             the URL might be incorrect.
           </p>
 
           {/* Actions */}
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link to="/">
-              <Button className="rounded-xl px-6 py-3 transition hover:bg-violet-700">
+              <Button className="rounded-xl px-6 py-3 hover:bg-violet-700">
                 Go Home
               </Button>
             </Link>
@@ -36,7 +36,7 @@ function PageNotFound() {
               <Button
                 bgColor="bg-white"
                 textColor="text-violet-600"
-                className="rounded-xl border border-violet-600 px-6 py-3 transition hover:bg-violet-50"
+                className="rounded-xl border border-violet-600 px-6 py-3 hover:bg-violet-50"
               >
                 Browse Posts
               </Button>
@@ -46,6 +46,6 @@ function PageNotFound() {
       </Container>
     </section>
   );
-}
+};
 
 export default PageNotFound;

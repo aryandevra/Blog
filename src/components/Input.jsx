@@ -1,17 +1,17 @@
-import { forwardRef, useId } from "react";
+import { forwardRef, useId } from 'react';
 
-function Input(
+const Input = (
   {
     id,
     label,
-    type = "text",
-    bgColor = "bg-white",
-    textColor = "text-black",
-    className = "",
+    type = 'text',
+    bgColor = 'bg-white',
+    textColor = 'text-black',
+    className = '',
     ...props
   },
-  ref,
-) {
+  ref
+) => {
   const generatedId = useId();
   const inputId = id || generatedId;
 
@@ -36,6 +36,6 @@ function Input(
       />
     </div>
   );
-}
+};
 
 export default forwardRef(Input);

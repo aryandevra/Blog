@@ -1,7 +1,7 @@
-import { Container, PostForm } from "../components";
+import { Container, PostForm } from '../components';
 
 // Render the create post page
-function AddPost() {
+const AddPost = () => {
   return (
     <div className="mx-auto px-8 py-8">
       <Container>
@@ -9,6 +9,6 @@ function AddPost() {
       </Container>
     </div>
   );
-}
+};
 
 export default AddPost;

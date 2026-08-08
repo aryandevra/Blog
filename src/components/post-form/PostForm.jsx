@@ -1,19 +1,22 @@
-import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import toast from 'react-hot-toast';
 
-import { databasesService, storageService } from "../../appwrite";
-import { Button, Input, Loader, RTE, Select } from "..";
+import { databasesService, storageService } from '../../appwrite';
+import { Button, Input, Loader, RTE, Select } from '..';
+import { addPost, invalidatePosts, updatePost } from '../../store/postSlice';
 
-function PostForm({ post }) {
+const PostForm = ({ post }) => {
   // Initialize navigation, Redux and component state
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.auth.userData);
+  const dispatch = useDispatch();
+  const userData = useSelector(state => state.auth.userData);
 
-  const [featuredImageUrl, setFeaturedImageUrl] = useState("");
+  const [featuredImageUrl, setFeaturedImageUrl] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
   // Initialize form state
   const {
@@ -26,30 +29,30 @@ function PostForm({ post }) {
     formState: { errors, isDirty },
   } = useForm({
     defaultValues: {
-      title: "",
-      slug: "",
-      content: "",
-      isPrivate: "false",
+      title: '',
+      slug: '',
+      content: '',
+      isPrivate: 'false',
       image: null,
     },
   });
 
   // Generate a URL-friendly slug from the title
-  const slugTransform = useCallback((value) => {
-    if (!value) return "";
+  const slugTransform = useCallback(value => {
+    if (!value) return '';
 
     return value
       .trim()
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
   }, []);
 
   // Update the slug automatically when the title changes
   useEffect(() => {
     const subscription = watch((formValues, { name, type }) => {
-      if (name === "title" && type === "change") {
-        setValue("slug", slugTransform(formValues.title), {
+      if (name === 'title' && type === 'change') {
+        setValue('slug', slugTransform(formValues.title), {
           shouldValidate: true,
           shouldDirty: true,
         });
@@ -63,22 +66,22 @@ function PostForm({ post }) {
   useEffect(() => {
     if (!post) {
       reset({
-        title: "",
-        slug: "",
-        content: "",
-        isPrivate: "false",
+        title: '',
+        slug: '',
+        content: '',
+        isPrivate: 'false',
         image: null,
       });
 
-      setFeaturedImageUrl("");
+      setFeaturedImageUrl('');
       return;
     }
 
     reset({
-      title: post.title || "",
-      slug: post.slug || "",
-      content: post.content || "",
-      isPrivate: post.isPrivate ? "true" : "false",
+      title: post.title || '',
+      slug: post.slug || '',
+      content: post.content || '',
+      isPrivate: post.isPrivate ? 'true' : 'false',
       image: null,
     });
   }, [post, reset]);
@@ -89,7 +92,7 @@ function PostForm({ post }) {
 
     async function loadFeaturedImage() {
       if (!post?.featuredImage) {
-        setFeaturedImageUrl("");
+        setFeaturedImageUrl('');
         return;
       }
 
@@ -100,10 +103,10 @@ function PostForm({ post }) {
           setFeaturedImageUrl(viewUrl);
         }
       } catch (error) {
-        console.error("Failed to load featured image:", error);
+        console.error('Failed to load featured image:', error);
 
         if (!cancelled) {
-          setFeaturedImageUrl("");
+          setFeaturedImageUrl('');
         }
       }
     }
@@ -115,7 +118,7 @@ function PostForm({ post }) {
     };
   }, [post]);
 
-  const watchedImage = watch("image");
+  const watchedImage = watch('image');
 
   // Preview the selected image before uploading
   useEffect(() => {
@@ -132,8 +135,8 @@ function PostForm({ post }) {
   }, [watchedImage]);
 
   // Create a new post or update an existing one
-  const submit = async (formData) => {
-    setError("");
+  const submit = async formData => {
+    setError('');
     setLoading(true);
 
     let featuredImageId = post?.featuredImage ?? null;
@@ -151,7 +154,7 @@ function PostForm({ post }) {
         slug: formData.slug,
         content: formData.content,
         featuredImage: featuredImageId,
-        isPrivate: formData.isPrivate === "true",
+        isPrivate: formData.isPrivate === 'true',
       };
 
       // Update an existing post
@@ -166,13 +169,16 @@ function PostForm({ post }) {
             await storageService.deleteFile(uploadedFile.$id);
           }
 
-          throw new Error("Unable to update post.");
+          throw new Error('Unable to update post.');
         }
 
         // Remove the previous featured image after a successful update
         if (uploadedFile && post.featuredImage) {
           await storageService.deleteFile(post.featuredImage);
         }
+
+        dispatch(updatePost(updatedPost));
+        dispatch(invalidatePosts('all'));
 
         navigate(`/post/${updatedPost.slug}`, {
           replace: true,
@@ -192,15 +198,25 @@ function PostForm({ post }) {
           await storageService.deleteFile(uploadedFile.$id);
         }
 
-        throw new Error("Unable to create post.");
+        throw new Error('Unable to create post.');
       }
+
+      dispatch(addPost(createdPost));
+      dispatch(invalidatePosts('all'));
 
       navigate(`/post/${createdPost.slug}`, {
         replace: true,
       });
     } catch (submitError) {
-      console.error("Post submission failed:", submitError);
-      setError(submitError?.message || "Something went wrong.");
+      console.error('Post submission failed:', submitError);
+
+      if (submitError?.code === 409) {
+        toast.error('Slug already taken');
+      } else {
+        toast.error('Something went wrong');
+      }
+
+      setError(submitError?.message || 'Something went wrong.');
     } finally {
       setLoading(false);
     }
@@ -222,9 +238,9 @@ function PostForm({ post }) {
         <Input
           label="Title:"
           placeholder="Title"
-          {...register("title", {
-            setValueAs: (value) => value.trim(),
-            required: "Title is required.",
+          {...register('title', {
+            setValueAs: value => value.trim(),
+            required: 'Title is required.',
           })}
         />
 
@@ -240,7 +256,7 @@ function PostForm({ post }) {
           placeholder="Slug"
           className="cursor-not-allowed"
           readOnly
-          {...register("slug", {
+          {...register('slug', {
             required: true,
           })}
         />
@@ -256,7 +272,7 @@ function PostForm({ post }) {
           accept="image/*"
           textColor="text-gray-500"
           className="text-sm file:mr-4 file:cursor-pointer file:rounded-lg file:bg-violet-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-violet-600 hover:file:bg-violet-100"
-          {...register("image")}
+          {...register('image')}
         />
 
         {/* Featured image preview */}
@@ -264,7 +280,7 @@ function PostForm({ post }) {
           <div className="mb-4 w-full">
             <img
               src={featuredImageUrl}
-              alt={post?.title || "Featured image"}
+              alt={post?.title || 'Featured image'}
               className="w-full rounded-lg object-cover"
             />
           </div>
@@ -273,10 +289,10 @@ function PostForm({ post }) {
         <Select
           label="Visibility:"
           options={[
-            { label: "Public", value: "false" },
-            { label: "Private", value: "true" },
+            { label: 'Public', value: 'false' },
+            { label: 'Private', value: 'true' },
           ]}
-          {...register("isPrivate", {
+          {...register('isPrivate', {
             required: true,
           })}
         />
@@ -288,18 +304,16 @@ function PostForm({ post }) {
         <Button
           type="submit"
           disabled={loading || !isDirty}
-          bgColor={post ? "bg-green-600" : undefined}
-          className={`w-full rounded-xl py-2 transition ${
-            error ? "mt-4" : "mt-8"
-          } ${
-            post ? "hover:bg-green-700" : "hover:bg-violet-700"
+          bgColor={post ? 'bg-green-600' : undefined}
+          className={`w-full rounded-xl py-2 ${error ? 'mt-4' : 'mt-8'} ${
+            post ? 'hover:bg-green-700' : 'hover:bg-violet-700'
           } disabled:cursor-not-allowed disabled:bg-gray-400`}
         >
-          {post ? "Update" : "Publish"}
+          {post ? 'Update' : 'Publish'}
         </Button>
       </div>
     </form>
   );
-}
+};
 
 export default PostForm;

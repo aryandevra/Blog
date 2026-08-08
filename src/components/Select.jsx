@@ -1,6 +1,6 @@
-import { forwardRef, useId } from "react";
+import { forwardRef, useId } from 'react';
 
-function Select({ id, label, options = [], className = "", ...props }, ref) {
+const Select = ({ id, label, options = [], className = '', ...props }, ref) => {
   const generatedId = useId();
   const selectId = id || generatedId;
 
@@ -30,6 +30,6 @@ function Select({ id, label, options = [], className = "", ...props }, ref) {
       </select>
     </div>
   );
-}
+};
 
 export default forwardRef(Select);
