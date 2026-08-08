@@ -42,14 +42,11 @@ Blogify provides a clean and modern blogging experience where users can:
 ## 🛠️ Tech Stack
 
 - React
-- Vite
 - Tailwind CSS
 - Redux Toolkit
 - React Router
-- React Hook Form
 - Appwrite
 - TinyMCE
-- HTML React Parser
 
 ---
 
