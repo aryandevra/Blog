@@ -8,7 +8,7 @@ Blogify lets authenticated users create, edit, publish, and manage blog posts wi
 
 ## 🚀 Live Demo
 
-🔗 https://bloging24.netlify.app/
+🔗 https://bloging24.vercel.app/
 
 ---
 
