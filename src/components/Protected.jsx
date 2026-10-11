@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate, Outlet } from 'react-router';
-import toast from 'react-hot-toast';
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate, Outlet } from "react-router";
+import toast from "react-hot-toast";
 
 const Protected = ({ children, authentication = true }) => {
   const navigate = useNavigate();
@@ -15,10 +15,10 @@ const Protected = ({ children, authentication = true }) => {
     }
 
     if (authentication && authStatus !== authentication) {
-      toast.error('Please log in to access this page');
-      navigate('/login', { replace: true });
+      toast.error("Please log in to access this page");
+      navigate("/login", { replace: true });
     } else if (!authentication && authStatus !== authentication) {
-      navigate('/', { replace: true });
+      navigate("/", { replace: true });
     }
   }, [authStatus, authentication, navigate]);
 

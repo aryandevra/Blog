@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Outlet } from 'react-router';
-import { Toaster } from 'react-hot-toast';
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Outlet } from "react-router";
+import { Toaster } from "react-hot-toast";
 
-import { login, logout } from './store/authSlice';
-import { useDocumentTitle } from './hooks';
-import { authService } from './appwrite';
-import { Footer, Header, Loader, ScrollToTop } from './components';
+import { login, logout } from "./store/authSlice";
+import { useDocumentTitle } from "./hooks";
+import { authService } from "./appwrite";
+import { Footer, Header, Loader, ScrollToTop } from "./components";
 
 const App = () => {
   // Set the document title
-  useDocumentTitle('Blog');
+  useDocumentTitle("Blog");
 
   const [loading, setLoading] = useState(true);
 

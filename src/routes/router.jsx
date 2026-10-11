@@ -1,7 +1,7 @@
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter } from "react-router";
 
-import App from '../App';
-import { Protected } from '../components';
+import App from "../App";
+import { Protected } from "../components";
 import {
   AddPost,
   AllPosts,
@@ -11,21 +11,21 @@ import {
   PageNotFound,
   Post,
   Signup,
-} from '../pages';
+} from "../pages";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     Component: App,
     children: [
       {
         index: true,
-        handle: { title: 'Home' },
+        handle: { title: "Home" },
         Component: Home,
       },
       {
-        path: '/post/:slug',
-        handle: { title: 'Post' },
+        path: "/post/:slug",
+        handle: { title: "Post" },
         Component: Post,
       },
 
@@ -34,13 +34,13 @@ const router = createBrowserRouter([
         element: <Protected authentication={false} />,
         children: [
           {
-            path: '/login',
-            handle: { title: 'Login' },
+            path: "/login",
+            handle: { title: "Login" },
             Component: Login,
           },
           {
-            path: '/signup',
-            handle: { title: 'Signup' },
+            path: "/signup",
+            handle: { title: "Signup" },
             Component: Signup,
           },
         ],
@@ -51,26 +51,26 @@ const router = createBrowserRouter([
         element: <Protected authentication={true} />,
         children: [
           {
-            path: '/all-posts',
-            handle: { title: 'All Posts' },
+            path: "/all-posts",
+            handle: { title: "All Posts" },
             Component: AllPosts,
           },
           {
-            path: '/add-post',
-            handle: { title: 'Add Post' },
+            path: "/add-post",
+            handle: { title: "Add Post" },
             Component: AddPost,
           },
           {
-            path: '/edit-post/:slug',
-            handle: { title: 'Edit Post' },
+            path: "/edit-post/:slug",
+            handle: { title: "Edit Post" },
             Component: EditPost,
           },
         ],
       },
 
       {
-        path: '*',
-        handle: { title: '404 Error' },
+        path: "*",
+        handle: { title: "404 Error" },
         Component: PageNotFound,
       },
     ],

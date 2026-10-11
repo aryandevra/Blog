@@ -1,6 +1,6 @@
-import { Link } from 'react-router';
+import { Link } from "react-router";
 
-import { Button, Container } from '../components';
+import { Button, Container } from "../components";
 
 // Render the 404 page
 const PageNotFound = () => {

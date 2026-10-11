@@ -1,13 +1,13 @@
-import { forwardRef, useId } from 'react';
+import { forwardRef, useId } from "react";
 
 const Input = (
   {
     id,
     label,
-    type = 'text',
-    bgColor = 'bg-white',
-    textColor = 'text-black',
-    className = '',
+    type = "text",
+    bgColor = "bg-white",
+    textColor = "text-black",
+    className = "",
     ...props
   },
   ref

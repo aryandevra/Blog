@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { setPosts } from '../store/postSlice';
-import { databasesService } from '../appwrite';
-import { Button, Container, Loader, PostCard } from '../components';
+import { setPosts } from "../store/postSlice";
+import { databasesService } from "../appwrite";
+import { Button, Container, Loader, PostCard } from "../components";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -26,13 +26,13 @@ const Home = () => {
 
         if (cancelled) return;
 
-        dispatch(setPosts({ type: 'public', posts: response }));
+        dispatch(setPosts({ type: "public", posts: response }));
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        console.error("Error fetching posts:", error);
 
         if (cancelled) return;
 
-        dispatch(setPosts({ type: 'public', posts: [] }));
+        dispatch(setPosts({ type: "public", posts: [] }));
       } finally {
         if (!cancelled) {
           setLoading(false);

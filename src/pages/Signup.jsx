@@ -1,4 +1,4 @@
-import { Signup as SignupComponent } from '../components';
+import { Signup as SignupComponent } from "../components";
 
 // Render the signup page
 const Signup = () => {

@@ -1,4 +1,4 @@
-const Loader = ({ className = '' }) => {
+const Loader = ({ className = "" }) => {
   // Render a loading spinner
   return (
     <div

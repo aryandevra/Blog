@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { databasesService } from '../appwrite';
-import { Container, Loader, PostCard } from '../components';
-import { setPosts } from '../store/postSlice';
+import { databasesService } from "../appwrite";
+import { Container, Loader, PostCard } from "../components";
+import { setPosts } from "../store/postSlice";
 
 // Render all posts created by the current user
 const AllPosts = () => {
@@ -33,7 +33,7 @@ const AllPosts = () => {
         const response = await databasesService.getPosts(userData.$id);
 
         if (!cancelled) {
-          dispatch(setPosts({ type: 'user', posts: response }));
+          dispatch(setPosts({ type: "user", posts: response }));
         }
       } finally {
         if (!cancelled) {

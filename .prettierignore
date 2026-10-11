@@ -5,3 +5,6 @@ public/
 
 *.env*
 .gitignore
+
+package.json
+package-lock.json

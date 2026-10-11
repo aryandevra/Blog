@@ -1,18 +1,18 @@
-import { useCallback, useEffect, useState } from 'react';
-import HtmlReactParser from 'html-react-parser';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useParams } from 'react-router';
-import toast from 'react-hot-toast';
+import { useCallback, useEffect, useState } from "react";
+import HtmlReactParser from "html-react-parser";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router";
+import toast from "react-hot-toast";
 
-import { databasesService, storageService } from '../appwrite';
-import { Button, Container, Loader } from '../components';
-import { invalidatePosts, removePost } from '../store/postSlice';
+import { databasesService, storageService } from "../appwrite";
+import { Button, Container, Loader } from "../components";
+import { invalidatePosts, removePost } from "../store/postSlice";
 
 const Post = () => {
   const [post, setPost] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -36,26 +36,26 @@ const Post = () => {
   // Load the requested post
   const fetchPost = useCallback(async () => {
     if (!slug) {
-      navigate('/', { replace: true });
+      navigate("/", { replace: true });
       return;
     }
 
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const result = await databasesService.getPost(slug);
 
       if (!result) {
-        toast.error('Post not found');
-        navigate('/', { replace: true });
+        toast.error("Post not found");
+        navigate("/", { replace: true });
         return;
       }
 
       setPost(result);
     } catch (error) {
-      toast.error('Error fetching post');
-      setError(error?.message || 'Error fetching post');
+      toast.error("Error fetching post");
+      setError(error?.message || "Error fetching post");
     } finally {
       setLoading(false);
     }
@@ -68,8 +68,8 @@ const Post = () => {
   // Prevent access to private posts owned by other users
   useEffect(() => {
     if (post && !canViewPost) {
-      toast.error('Unauthorized access');
-      navigate('/', { replace: true });
+      toast.error("Unauthorized access");
+      navigate("/", { replace: true });
     }
   }, [canViewPost, navigate, post]);
 
@@ -108,7 +108,7 @@ const Post = () => {
     if (!post) return;
 
     const confirmed = window.confirm(
-      'Are you sure you want to delete this post?'
+      "Are you sure you want to delete this post?"
     );
 
     if (!confirmed) return;
@@ -121,14 +121,14 @@ const Post = () => {
           await storageService.deleteFile(post.featuredImage);
         }
 
-        toast.success('Post deleted suceessfully');
+        toast.success("Post deleted suceessfully");
         dispatch(removePost(post.$id));
-        dispatch(invalidatePosts('all'));
-        navigate('/', { replace: true });
+        dispatch(invalidatePosts("all"));
+        navigate("/", { replace: true });
       }
     } catch (error) {
-      toast.error('Error deleting post');
-      setError(error?.message || 'Error deleting post');
+      toast.error("Error deleting post");
+      setError(error?.message || "Error deleting post");
     }
   };
 
@@ -161,7 +161,7 @@ const Post = () => {
       <Container>
         <div className="relative mb-8 flex w-full justify-center rounded-xl border p-2">
           <img
-            src={preview ?? '/blogify.svg'}
+            src={preview ?? "/blogify.svg"}
             alt={post.title}
             className="max-h-100 rounded-xl"
           />

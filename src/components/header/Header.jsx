@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
-import { HiOutlineMenuAlt3, HiX } from 'react-icons/hi';
-import { Link } from 'react-router';
+import { useEffect, useState } from "react";
+import { HiOutlineMenuAlt3, HiX } from "react-icons/hi";
+import { Link } from "react-router";
 
-import { Button, Logo, Navigation } from '..';
+import { Button, Logo, Navigation } from "..";
 
 const Header = () => {
   // Manage mobile sidebar state
@@ -10,16 +10,16 @@ const Header = () => {
 
   // Lock page scrolling while the sidebar is open
   useEffect(() => {
-    document.body.style.overflow = sidebarOpen ? 'hidden' : '';
+    document.body.style.overflow = sidebarOpen ? "hidden" : "";
 
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [sidebarOpen]);
 
   // Close the sidebar when switching to desktop
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
 
     const handleChange = event => {
       if (!event.matches) return;
@@ -27,10 +27,10 @@ const Header = () => {
       setSidebarOpen(false);
     };
 
-    mediaQuery.addEventListener('change', handleChange);
+    mediaQuery.addEventListener("change", handleChange);
 
     return () => {
-      mediaQuery.removeEventListener('change', handleChange);
+      mediaQuery.removeEventListener("change", handleChange);
     };
   }, []);
 
@@ -64,7 +64,7 @@ const Header = () => {
       {/* Background overlay */}
       <div
         className={`fixed inset-0 z-9 bg-black/40 backdrop-blur-sm transition-all duration-300 md:hidden ${
-          sidebarOpen ? 'visible opacity-100' : 'invisible opacity-0'
+          sidebarOpen ? "visible opacity-100" : "invisible opacity-0"
         }`}
         onClick={() => setSidebarOpen(false)}
       />
@@ -72,7 +72,7 @@ const Header = () => {
       {/* Mobile sidebar */}
       <aside
         className={`fixed top-0 right-0 z-11 h-screen w-72 transform bg-white shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
-          sidebarOpen ? 'translate-x-0' : 'translate-x-full'
+          sidebarOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* Sidebar header */}

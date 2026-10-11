@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 // Initial post state
 const initialState = {
@@ -11,19 +11,19 @@ const initialState = {
 };
 
 const postSlice = createSlice({
-  name: 'posts',
+  name: "posts",
   initialState,
   reducers: {
     // Set posts for a specific type (public or user)
     setPosts: (state, action) => {
-      const { type = 'public', posts = [] } = action.payload ?? {};
+      const { type = "public", posts = [] } = action.payload ?? {};
 
-      if (type === 'public') {
+      if (type === "public") {
         state.publicPosts = posts;
         state.needsRefresh.public = false;
       }
 
-      if (type === 'user') {
+      if (type === "user") {
         state.userPosts = posts;
         state.needsRefresh.user = false;
       }
@@ -82,13 +82,13 @@ const postSlice = createSlice({
 
     // Invalidate posts for a specific type (public, user, or all)
     invalidatePosts: (state, action) => {
-      const type = action.payload ?? 'all';
+      const type = action.payload ?? "all";
 
-      if (type === 'all' || type === 'public') {
+      if (type === "all" || type === "public") {
         state.needsRefresh.public = true;
       }
 
-      if (type === 'all' || type === 'user') {
+      if (type === "all" || type === "user") {
         state.needsRefresh.user = true;
       }
     },

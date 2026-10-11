@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router';
-import toast from 'react-hot-toast';
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router";
+import toast from "react-hot-toast";
 
-import { Button, Logo } from '../index';
+import { Button, Logo } from "../index";
 
 const categories = [
-  { name: 'Technology', slug: '/#' },
-  { name: 'Travel', slug: '/#' },
-  { name: 'Lifestyle', slug: '/#' },
+  { name: "Technology", slug: "/#" },
+  { name: "Travel", slug: "/#" },
+  { name: "Lifestyle", slug: "/#" },
 ];
 
 const Footer = () => {
   // Newsletter state
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
 
   // Authentication status
@@ -32,17 +32,17 @@ const Footer = () => {
 
   // Footer navigation links
   const quickLinks = [
-    { name: 'Home', slug: '/', active: true },
-    { name: 'All Posts', slug: '/all-posts', active: true },
-    { name: 'Add Post', slug: '/add-post', active: authStatus },
+    { name: "Home", slug: "/", active: true },
+    { name: "All Posts", slug: "/all-posts", active: true },
+    { name: "Add Post", slug: "/add-post", active: authStatus },
   ];
 
   // Handle newsletter subscription
   const handleSubscribe = e => {
     e.preventDefault();
 
-    toast.success('Subscribed to the newsletter!');
-    setEmail('');
+    toast.success("Subscribed to the newsletter!");
+    setEmail("");
     setIsSubscribed(true);
   };
 
@@ -111,7 +111,7 @@ const Footer = () => {
               disabled={isSubscribed}
               className="mt-3 rounded-xl px-3 py-1 text-sm hover:bg-violet-700 disabled:bg-gray-400"
             >
-              {isSubscribed ? 'Subscribed 🔔' : 'Subscribe'}
+              {isSubscribed ? "Subscribed 🔔" : "Subscribe"}
             </Button>
           </form>
         </div>

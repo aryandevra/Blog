@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
-import { authService } from '../appwrite';
-import { login as authLogin } from '../store/authSlice';
-import { Button, Input, Logo } from '.';
+import { authService } from "../appwrite";
+import { login as authLogin } from "../store/authSlice";
+import { Button, Input, Logo } from ".";
 
 const Login = () => {
   // Initialize navigation, Redux and form state
@@ -21,17 +21,17 @@ const Login = () => {
       isValid,
     },
   } = useForm({
-    mode: 'onChange',
+    mode: "onChange",
   });
 
   // Store login error and loading state
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Authenticate the user
   const handleLogin = async data => {
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const session = await authService.login(data);
@@ -49,12 +49,12 @@ const Login = () => {
           );
         }
 
-        toast.success('Logged in successfully!');
-        navigate('/');
+        toast.success("Logged in successfully!");
+        navigate("/");
       }
     } catch (error) {
-      toast.error(error?.message || 'Something went wrong');
-      setError(error?.message || 'Something went wrong');
+      toast.error(error?.message || "Something went wrong");
+      setError(error?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -95,12 +95,12 @@ const Login = () => {
               type="email"
               placeholder="Enter your email"
               readOnly={loading}
-              {...register('email', {
+              {...register("email", {
                 setValueAs: value => value.trim(),
-                required: 'Email is required',
+                required: "Email is required",
                 pattern: {
                   value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                  message: 'Enter a valid email address',
+                  message: "Enter a valid email address",
                 },
               })}
             />
@@ -110,11 +110,11 @@ const Login = () => {
               type="password"
               placeholder="Enter your password"
               readOnly={loading}
-              {...register('password', {
-                required: 'Password is required',
+              {...register("password", {
+                required: "Password is required",
                 minLength: {
                   value: 8,
-                  message: 'Password must be at least 8 characters long',
+                  message: "Password must be at least 8 characters long",
                 },
               })}
             />
@@ -124,7 +124,7 @@ const Login = () => {
               disabled={!isValid || loading}
               className="mt-8 w-full rounded-xl py-2 hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-400"
             >
-              {loading ? 'Logging...' : 'Log In'}
+              {loading ? "Logging..." : "Log In"}
             </Button>
           </div>
         </form>

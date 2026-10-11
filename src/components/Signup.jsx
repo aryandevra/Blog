@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
-import { authService } from '../appwrite';
-import { login as authLogin } from '../store/authSlice';
-import { Button, Input, Logo } from '.';
+import { authService } from "../appwrite";
+import { login as authLogin } from "../store/authSlice";
+import { Button, Input, Logo } from ".";
 
 const Signup = () => {
   // Initialize navigation, Redux and form state
@@ -21,12 +21,12 @@ const Signup = () => {
 
   // Store signup error and loading state
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // Create a new account and update the application state
   const handleSignup = async data => {
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const session = await authService.createAccount(data);
@@ -44,12 +44,12 @@ const Signup = () => {
           );
         }
 
-        toast.success('Account created successfully!');
-        navigate('/');
+        toast.success("Account created successfully!");
+        navigate("/");
       }
     } catch (error) {
-      toast.error(error?.message || 'Something went wrong');
-      setError(error?.message || 'Something went wrong');
+      toast.error(error?.message || "Something went wrong");
+      setError(error?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -68,7 +68,7 @@ const Signup = () => {
         </h2>
 
         <p className="mt-2 text-center text-base text-black/60">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link
             to="/login"
             className="font-medium transition-all duration-200 hover:underline"
@@ -89,16 +89,16 @@ const Signup = () => {
               label="Full Name"
               placeholder="Enter your full name"
               readOnly={loading}
-              {...register('name', {
+              {...register("name", {
                 setValueAs: value => value.trim(),
-                required: 'Name is required',
+                required: "Name is required",
                 pattern: {
                   value: /^[A-Za-z]+(?:\s+[A-Za-z]+)*$/,
-                  message: 'Enter a valid name',
+                  message: "Enter a valid name",
                 },
                 minLength: {
                   value: 3,
-                  message: 'Name must be at least 3 characters',
+                  message: "Name must be at least 3 characters",
                 },
               })}
             />
@@ -114,12 +114,12 @@ const Signup = () => {
               type="email"
               placeholder="Enter your email"
               readOnly={loading}
-              {...register('email', {
+              {...register("email", {
                 setValueAs: value => value.trim(),
-                required: 'Email is required',
+                required: "Email is required",
                 pattern: {
                   value: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
-                  message: 'Enter a valid email address',
+                  message: "Enter a valid email address",
                 },
               })}
             />
@@ -135,11 +135,11 @@ const Signup = () => {
               type="password"
               placeholder="Enter your password"
               readOnly={loading}
-              {...register('password', {
-                required: 'Password is required',
+              {...register("password", {
+                required: "Password is required",
                 minLength: {
                   value: 8,
-                  message: 'Password must be at least 8 characters long',
+                  message: "Password must be at least 8 characters long",
                 },
               })}
             />
@@ -155,7 +155,7 @@ const Signup = () => {
               disabled={loading}
               className="mt-8 w-full rounded-xl py-2 hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-gray-400"
             >
-              {loading ? 'Creating Account...' : 'Create Account'}
+              {loading ? "Creating Account..." : "Create Account"}
             </Button>
           </div>
         </form>

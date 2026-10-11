@@ -1,4 +1,4 @@
-const Logo = ({ className = '' }) => {
+const Logo = ({ className = "" }) => {
   // Render the application logo
   return <span className={`text-violet-600 ${className}`}>🪶 Blogify</span>;
 };
