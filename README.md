@@ -27,18 +27,6 @@ Blogify lets authenticated users create, edit, publish, and manage blog posts wi
 
 ---
 
-## 🖼️ Preview
-
-Blogify provides a clean and modern blogging experience where users can:
-
-- Create and publish articles
-- Upload featured images
-- Edit existing posts
-- Browse all published content
-- Manage authentication securely
-
----
-
 ## 🛠️ Tech Stack
 
 - React
@@ -141,7 +129,7 @@ Email / Password Authentication
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/aryandevra24/Blog.git
+git clone https://github.com/aryandevra/Blog.git
 ```
 
 ### 2. Navigate to Project Folder
